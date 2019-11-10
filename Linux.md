@@ -1,5 +1,7 @@
 # Linux
 
+路线：文件(目录)管理-磁盘与文件系统-压缩打包-vim-BASH-正则表达式与文件格式化处理-Shell-帐号管理与ACL权限设定-磁盘配额与进阶文件系统管理-crontab工作计划？-程序管理与SELinux初探-认识系统服务(daemons)-登录档-开机流程、模块管理与Loader-系统设定工具(网络与打印机)与硬件侦测-软件安装-X Window设定介绍-Linux备份策略-Linux核心编译与管理
+
 test1,test2,test3同属testgroup这个群组
 
 -rw-r--r-- 1 root root 238 Jun 18 17:22 test.txt
@@ -223,7 +225,7 @@ rm testfile  # 删除这个文件
 
 ### 目录配置
 
-Filesystem Hierarchy Standard (FHS)标准：规范每个特定的目录下应该 要放置什举样子的数据
+Filesystem Hierarchy Standard (FHS)标准：规范每个特定的目录下应该 要放置什么样子的数据
 
 |        |        可分享的         |      不可分享的       |
 | :----: | :---------------------: | :-------------------: |
@@ -232,5 +234,141 @@ Filesystem Hierarchy Standard (FHS)标准：规范每个特定的目录下应该
 | 可变的 |  /var/mail(user email)  |  /var/run(程序相关)   |
 |        | /var/spool/news(新闻组) |  /var/lock(程序相关)  |
 
- 
+ /etc /bin /dev /lib /sbin + /:不可分
+
+/usr:可分享给局域网的其他主机使用，Unix Software Resource
+
+/var:常态性变动的文件（快取cache、log file、lock file、run file、MySQL数据库等等）
+
+lsb_release -a:你的distribution使用哪个Linux标准（Linux Standard Base）
+
+### Linux文件与目录管理
+
+#### 目录相关操作，.，..，-，~，cd，pwd，mkdir，rm
+
+pwd -P:确实路径，非链接link路径，Print Working Directory
+
+```
+cd /var/mail
+pwd
+/var/mail
+pwd -p
+/var/spool/mail
+ls -ld /var/mail
+```
+
+Mkdir [-mp]:
+
+-m:mkdir -m 711 dir
+
+-p: mkdir -p dir1/dir2/dir3...
+
+Rm -r dir 
+
+Echo $PATH/su - username:看在根帐户和普通用户里的执行文件路径的变量有何不同？
+
+```
+mv /bin/ls /root
+/root/ls
+./ls
+PATH="$PATH:/root" # 将/root加入PATH当中
+mv /root/ls /bin # 将ls挪回/bin底下
+```
+
+文件与目录的检视：
+
+ls [-aAdfFhilnrRSt]/[--color={never,auto,always}]/[--full-time] P207
+
+```
+ls -alF --color=never ~
+ls -al --full-time ~
+```
+
+复制：
+
+cp [-adfilprsu] source1 source2 source3 ... dir P209
+
+```
+cp ~/.bashrc /tmp/bashrc
+cp -i ~/.bashrc /tmp/bashrc
+cd /tmp
+cp /var/log/wtmp .
+ls -l /var/log/wtmp wtmp
+cp -a /var/log/wtmp wtmp_2
+ls -l /var/log/wtmp wtmp_2
+cp -r /etc /tmp
+ls -l bashrc
+cp -s bashrc bashrc_slink # 符号链接(symbolic link)，快捷方式，P210
+cp -l bashrc bashrc_hlink # 实体链接(hard link)
+ls -l bashrc*
+cp -u ~/.bashrc /tmp/bashrc # 若源文件比目标文件新才会复制，常用于“备份”工作
+cp bashrc_slink bashrc_slink_1
+cp -d bashrc_slink bashrc_slink_2
+ls -l bashrc bashrc_slink*
+cp -a /var/log/wtmp /tmp/user1_wtmp
+ls -l /var/log/wtmp /tmp/user1_wtmp # 虽然加-a，也是无法达成完整复制权限的
+```
+
+复制时注意：
+
+- 是否完整保留源文件的信息？
+- 源文件是否为链接文件？
+- 源文件是否特殊文件，如：FIFO，socket
+- 源文件是否为目录？
+
+移除：
+
+rm [-fir]
+
+```
+cd /tmp
+rm -i bashrc
+rm -i bashrc*
+rm -r /tmp/etc
+\rm -r /tmp/etc # 忽略掉alias的指定选项
+touch ./-file # 建立-横杠开头的空文件
+ls -l
+rm -file- # -是选项，系统误解
+rm ./-file- 或者 rm -- -file-
+```
+
+移动：
+
+mv [-fiu]
+
+```
+cd /tmp
+cp ~/.bashrc bashrc
+mkdir dir1
+mv bashrc dir1
+mv dir1 dir2 # 更名，rename，可以同时更名多个文档
+```
+
+取得路径的文件名与目录名称
+
+```
+basename /etc/sysconfig/network
+dirname /etc/sysconfig/network
+```
+
+查阅文件：cat(con<u>cat</u>enate),tac,nl,more,less,head,tail,od P214
+
+cat [-AbEnTv]
+
+```
+cat /etc/issue
+cat -n /etc/issue
+cat -A /etc/xinetd.conf
+tac /etc/issue
+```
+
+nl [-bnw] -b a/t -n ln/rn/rz P216
+
+ ```
+nl -b a /etc/issue
+nl -b a -n rz /etc/issue
+nl -b a -n rz -w 3 /etc/issue
+ ```
+
+#### 默认权限与隐藏权限
 
