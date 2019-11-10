@@ -1,6 +1,5 @@
 # -*- coding:utf-8 -*-
 
-# import easygui
+import easygui
 
-import sys
-print sys.path
+easygui.msgbox("Hello!")
