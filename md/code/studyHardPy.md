@@ -1288,8 +1288,8 @@ print(a)
 
 ```python
 a = int(input()) # 3
-for i in range(6, a - 1, -1): #	2	3	4	5	6
-  														#	-5-4-3-2-1
+for i in range(6, a - 1, -1): #	 2 3 4 5 6
+  			      #	-5-4-3-2-1
 	print(i, end = " ")
 print()
 ```
