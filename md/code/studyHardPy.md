@@ -1960,5 +1960,787 @@ for x in range(18):
 	flag = not flag
 ```
 
+## 第九章　Python中的数据结构
 
+变量虽是存储值的好方法，但一次只能保存一个值。
+
+假如要存储1000个名字？
+
+```python
+name1 = input("Enter a name: ")
+name2 = input("Enter a name: ")
+name3 = input("Enter a name: ")
+# ...
+print(name1)
+print(name2)
+print(name3)
+# ...
+```
+
+Python中可用的数据结构：列表、元组、集合、不可变集合和字符串（字符串是含有字母数字字符的集合）。
+
+### 9.1　列表
+
+什么是列表？
+
+- 在一个通用名称下保存多个值的数据结构，一组项的集合
+- 每个项称为一个元素
+- 每个元素都以唯一的数字进行标定，这个数字称为索引位置，简称索引
+- 可变（可更改），元素的值可改（增删改）
+
+设计一个数据结构保存4个人的年龄
+
+第一种方式，直接赋值：age = [3, 4, 5, 6]
+
+第二种方式：
+
+```python 
+ages = [None] * 4 # 四个空元素
+k = 0
+ages[k] = 3
+ages[k + 1] = 4
+ages[k + 2] = 5
+ages[k + 3] = 6
+```
+
+第三种方式：
+
+```python
+ages = [] # 空的列表
+# 在内存中不保留任何位置，只是表明ages已经准备好接收新元素
+ages.append(3)
+ages.append(4)
+ages.append(5)
+ages.append(6)
+```
+
+### 9.2　元组
+
+什么是元组？
+
+- 和列表的主要区别是元组不可变（不可更改），一旦被创建，其元素的值就不能改变
+
+names = ("Mary", "Peter", "John")
+
+ages = (12, 13, 14)
+
+students = ("Mary", 12, "Peter", 13, "John", 14)
+
+### 9.3 从列表或元组中取值
+
+varname[Index]
+
+- 0,1,2,3,...
+- -1,-2,-3,...
+- [2:10:2]
+- [2:10:-2]
+
+#### exercise
+
+1.
+
+```python
+a = [None] * 3
+a[2] = 9
+b = 0
+a[b] = a[2] + 4
+a[b + 1] = a[0] + 5
+print(a)
+```
+
+2.
+
+```python
+l = [1,2,3]
+print(l[50]) #IndexError: list index out of range
+```
+
+### 9.4 alter the value of an existing element
+
+```python
+l = [1,2,3] # list
+l[1] = 999
+print(l)
+
+l = (1,2,3) # tuple
+l[1] = 999 #TypeError: 'tuple' object does not support item assignment
+print(l)
+```
+
+### 9.5 遍历列表和元组
+
+1.the first method: for index in range(size): process structure_name[index]
+
+```python
+l = [1,2,3]
+for i in range(3):
+	print(l[i])
+
+for i in range(3):
+	l[i] = l[i] * 2 # alter the value of the list's element
+	print(l[i])
+```
+
+2.the second method: for element in structure_name: process element
+
+```python
+l = [1,2,3]
+for i in l:
+	print(i)
+
+for i in l[::-1]:
+	print(i)
+"""
+for i in l:
+	i *= 2
+	print(l[i]) # 3 + error
+	# Don't alter the value of the list's element
+"""
+```
+
+#### exercise
+
+1.sum
+
+the first method:
+
+```python
+n = (1,2,3)
+total = 0
+for i in range(3):
+	total += n[i]
+print(total)
+```
+
+the second method:
+
+```python
+for i in n:
+	total += i
+print(total)
+```
+
+the third method:
+
+```python
+import math
+total = math.fsum(n)
+print(total)
+```
+
+2.nixu words
+
+```python
+# the first method
+n = [None] * 20
+for i in range(20):
+	n[i] = input()
+for i in range(19, -1, -1):
+	print(n[i])
+
+# the second method 
+n = []
+for i in range(3):
+	n.append(input())
+for j in n[::-1]:
+	print(j)
+```
+
+3.nixu zheng numbers
+
+```python
+ELEMENTS = 50
+values = []
+for i in range(ELEMENTS):
+	values.append(float(input()))
+
+for value in values[::-1]:
+	if value > 0:
+		print(value)
+```
+
+4.sum
+
+```python
+# the first method
+ELEMENTS = 50
+values = [None] * ELEMENTS
+for i in range(ELEMENTS):
+	values[i] = float(input("Enter a value: ")) # 1
+total = 0
+for i in range(ELEMENTS):
+	total += values[i] # 2
+print(total)
+
+# the second method
+ELEMENTS = 50
+values = [None] * ELEMENTS
+total = 0
+for i in range(ELEMENTS):
+	values[i] = float(input("Enter a value: ")) # 1
+	total += values[i] # 2
+print(total)
+
+# the third method
+import math
+ELEMENTS = 50
+values = []
+for i in range(ELEMENTS):
+	values.append(float(input("Enter a value: ")))
+total = math.fsum(values)
+print(total)
+```
+
+5.average
+
+```python
+# the first method
+ELEMENTS = 30
+values = []
+for i in range(ELEMENTS):
+	values.append(float(input("Enter a value: ")))
+total = 0
+for i in range(ELEMENTS):
+	total += values[i]
+average = total / ELEMENTS
+if average < 10:
+	print("Average value is less than 10")
+  
+# the second method
+import math
+ELEMENTS = 30
+values = []
+for i in range(ELEMENTS):
+	values.append(float(input("Enter a value: ")))
+if math.fsum(values) / ELEMENTS < 10:
+	print("Average value is less than 10")
+```
+
+6.element!=int(element)，判断实数，并显示实数索引
+
+```python
+ELEMENTS = 10
+a = []
+for i in range(ELEMENTS):
+	a.append(float(input("Enter a value for element " + str(i) + ": ")))
+for i in range(ELEMENTS):
+	if a[i] != int(a[i]):
+		print("A real found at index:", i)
+```
+
+7.显示奇数索引的元素
+
+```python
+# the first method
+ELEMENTS = 10
+values = []
+for i in range(ELEMENTS):
+	values.append(float(input("Enter a value for element " + str(i) + \
+		": ")))
+for i in range(1, ELEMENTS, 2):
+	print(values[i])
+  
+# the second method
+ELEMENTS = 10
+values = []
+for i in range(ELEMENTS):
+	values.append(float(input("Enter a value for element " + str(i) + \
+		": ")))
+for i in values[1:ELEMENTS:2]:
+	print(i)
+```
+
+### 9.6　字典
+
+什么是字典？
+
+- 字典与列表或元组之间的主要区别是字典元素使用键进行唯一标识
+- 键不一定是整数值
+- 每个键都与一个元素相关联（或映射）
+- 键必须是不可变的数据类型（如字符串、整数、浮点数或元组）
+- 在字典中键是唯一的，不能存在两个一样的键
+
+创建字典：
+
+第一种方法：
+
+dict_name = {key0: value0, key1: value1, key2: value2,...,keyN: valueN}
+
+如：stuedent = {"first_name": "Ann", "last_name": "Fox", "age": 15, "class": "3rd"}
+
+第二种方法：
+
+dict_name = {}
+
+dict_name[key0] = value1
+dict_name[key1] = value2
+dict_name[key2] = value3
+...
+dict_name[keyN] = valueN
+
+student["first_name"] = "Ann"
+
+student["last_name"] = "Fox"
+
+student["age"] = 15
+
+student["class"] = "3rd"
+
+### 9.7 从字典中取值
+
+print("Ann Fox at ", student["class"], " class.")
+
+print(student["weight"]) # error
+
+### 9.8 alter the value of the element of dictionary
+
+student["age"] = 16
+
+```python
+dict = {0: "a", 1: "b", 2: "c"}
+dict[3] = "d"
+print(dict)
+```
+
+### 9.9 遍历字典
+
+```python
+# the first method
+"""
+for key in structure_name:
+	process structure_name[key]
+"""
+stuedent = {"first_name": "Ann", "last_name": "Fox", \
+			"age": 15, "class": "3rd"}
+for item in stuedent:
+	print(item, stuedent[item])
+
+# salaries
+salaries = {"a": 5000, \
+			"b": 6000, \
+			"c": 7000, \
+			"d": 8000}
+for title in salaries:
+	salaries[title] += 2000 # alter the value
+	print(title, salaries[title])
+# print(salaries)
+# {'a': 7000, 'b': 8000, 'c': 9000, 'd': 10000}
+
+# the second method
+"""
+for key, value in structure_name.items():
+	process key, value
+"""
+grades = {"a": "A+", "b": "B+", "c": "C+", "d": "D+"}
+for item, grade in grades.items():
+	print(item, grade)
+
+salaries = {"a": 5000, \
+			"b": 6000, \
+			"c": 7000, \
+			"d": 8000}
+for title, salary in salaries.items():
+	salary += 2000  # no alter the value
+	print(title, salary)
+# print(salaries)
+# {'a': 5000, 'b': 6000, 'c': 7000, 'd': 8000}
+```
+
+### 9.10 del len max/min sort
+
+list del
+
+```python
+l = [1,2,3,4,5]
+print(l[1])
+del l[1]
+print(l)
+print(l[1])
+
+del l[1:3]
+print(l)
+
+del l[:]
+print(l)
+```
+
+dict del
+
+```python
+grades = {"a": "A+", "b": "B+", "c": "C+", "d": "D+"}
+del grades["b"]
+print(grades)
+```
+
+len(structure_name)
+
+```python
+print(len(l))
+
+length = len(l[2:4])
+print(length)
+
+for i in range(len(l)):
+	print(l[i], end = " ")
+```
+
+max/min(structure_name)
+
+```python
+print(max(l))
+
+maximum = max(l[1:3])
+print(maximum)
+
+w = ("a", "b", "c")
+print(max(w))
+```
+
+sort/sorted()
+
+list_name.sort([reverse = True])
+
+```python
+l = [3,4,9,2,6,7]
+# l.sort()
+l.sort(reverse = True)
+print(l)
+
+# sorted()返回一个新的排序列表或元组，保持初始结构不变
+l2 = sorted(l)
+print(l)
+print(l2)
+
+l2 = sorted(l, reverse = True)
+for element in l2:
+	print(element, end = " ")
+
+for element in sorted(l):
+	print(element, end = " ")
+```
+
+### exercise
+
+1.创建包含最大值的列表
+
+用户各输入20个数值到a和b两个列表，再创建一个新列表：元素为a和b两个列表相应位置上最大值。
+
+```python
+ELEMENTS = 3
+a = [None] * ELEMENTS
+b = [None] * ELEMENTS
+
+for i in range(ELEMENTS):
+	a[i] = float(input("Enter a number A:"))
+
+for i in range(ELEMENTS):
+	b[i] = float(input("Enter a number B:"))
+
+new_list = [None] * ELEMENTS
+for i in range(ELEMENTS):
+	if a[i] > b[i]:
+		new_list[i] = a[i]
+	else:
+		new_list[i] = b[i]
+
+for element in new_list:
+	print(element)
+```
+
+2.哪天可能会下雪？
+
+输入1月份31天中每天中午12:00记录的温度（华氏），显示可能会下雪的日期（低于36度）。
+
+```python
+DAYS = 31
+t = [None] * DAYS
+for i in range(DAYS):
+	t[i] = int(input("Enter the temp: "))
+for i in range(DAYS):
+	if t[i] < 36:
+		print(i + 1, end = "\t")
+```
+
+3.有没有可能下雪？
+
+输入1月份31天中每天中午12:00记录的温度（华氏），是否有哪一天低于36度。
+
+for i in range(DAYS):
+	if t[i] < 36:
+		print("There was a possibility of snow in January!")
+
+这样的话，低于36度有几天就会显示几次这条消息。
+
+第一种方法：计数低于36度的天数，如果不为0，则显示消息。
+
+```python
+count = 0
+for i in range(DAYS):
+	if t[i] < 36:
+		count += 1
+
+if count > 0:
+	print("There was a possibility of snow in January!")
+```
+
+第二种方法：使用信号旗（标识），当信号旗被升起来（Flag＝True），就永远不会再降下来。
+
+```python
+flag = False
+for i in range(DAYS):
+	if t[i] < 36:
+		flag = True
+
+if flag == True:
+	print("There was a possibility of snow in January!")
+```
+
+### 9.11 多个数据结构
+
+#### 1.计算平均值
+
+输入20名学生姓名和3门功课成绩，显示3门成绩平均值超过89分的学生姓名。
+
+```python
+STUDENTS = 20
+names = [None] * STUDENTS
+grades_lesson1 = [None] * STUDENTS
+grades_lesson2 = [None] * STUDENTS
+grades_lesson3 = [None] * STUDENTS
+
+for i in range(STUDENTS):
+	names[i] = input("Enter student name No" + str(i + 1) + ": ")
+	grades_lesson1[i] = int(input("Enter grade for lesson 1: "))
+	grades_lesson2[i] = int(input("Enter grade for lesson 2: "))
+	grades_lesson3[i] = int(input("Enter grade for lesson 3: "))
+
+for i in range(STUDENTS):
+	total = grades_lesson1[i] + grades_lesson2[i] + grades_lesson3[i]
+	average = total / 3.0
+	if average > 89:
+		print(names[i])
+```
+
+#### 2.同时使用列表和字典
+
+输入30名学生成绩等级，根据下表显示每名学生成绩等级对应的百分范围。
+
+| 等级 | 分值    |
+| ---- | ------- |
+| A    | 90～100 |
+| B    | 80～89  |
+| C    | 70～79  |
+| D    | 60～69  |
+| E/F  | 0～59   |
+
+```python
+STUDENTS = 30
+grades_table = {"A": "90-100", "B": "80-89", "C": "70-79", \
+				"D": "60-69", "E": "0-59", "F": "0-59"}
+names = [None] * STUDENTS
+grades = [None] * STUDENTS
+
+for i in range(STUDENTS):
+	names[i] = input("Enter student name No" + str(i + 1) + ": ")
+	grades[i] = input("Enter his or her grade: ")
+
+for i in range(STUDENTS):
+	# grade = grades[i]
+	# grade_as_percentage = grades_table[grade]
+
+	# print(names[i], grade_as_percentage)
+	print(names[i], grades_table[grades[i]]) # Ok
+```
+
+#### 3.查找列表中的最大值和最小值
+
+3.1显示20个湖泊最深的深度。
+
+```python
+LAKES = 20
+depths = [None] * LAKES
+for i in range(LAKES):
+	depths[i] = float(input("Enter depth of lake: "))
+
+# maximum = depths[0]
+# for i in range(1, LAKES):
+# 	if depths[i] > maximum:
+# 		maximum = depths[i]
+
+maximum = max(depths) # Ok
+print(maximum)
+```
+
+3.2 哪个湖泊最深？这里不能用max()
+
+```python
+LAKES = 20
+names = [None] * LAKES
+depths = [None] * LAKES
+
+for i in range(LAKES):
+	names[i] = input("Enter lake name: ")
+	depths[i] = float(input("Enter depth of lake: "))
+
+maximum = depths[0]
+m_name = names[0]
+for i in range(1, LAKES):
+	if depths[i] > maximum:
+		maximum = depths[i]
+		m_name = names[i]
+
+print(m_name)
+```
+
+3.3哪个湖泊最深？显示最深湖泊的所有信息：深度、名字、所属国和面积。
+
+```python
+# the first method
+LAKES = 3
+names = [None] * LAKES
+depths = [None] * LAKES
+countries = [None] * LAKES
+areas = [None] * LAKES
+
+for i in range(LAKES):
+	names[i] = input("Enter lake name: ")
+	depths[i] = float(input("Enter depth of lake: "))
+	countries[i] = input("Enter country name: ")
+	areas[i] = float(input("Enter area of lake: "))
+
+maximum = depths[0]
+m_name = names[0]
+m_country = countries[0]
+m_area = areas[0]
+for i in range(1, LAKES):
+	if depths[i] > maximum:
+		maximum = depths[i]
+		m_name = names[i]
+		m_country = countries[i]
+		m_area = areas[i]
+
+print(maximum, m_name, m_country, m_area)
+
+# the second method
+maximum = depths[0]
+# m_name = names[0]
+# m_country = countries[0]
+# m_area = areas[0]
+index_of_max = 0
+for i in range(1, LAKES):
+	if depths[i] > maximum:
+		maximum = depths[i]
+		# m_name = names[i]
+		# m_country = countries[i]
+		# m_area = areas[i]
+		index_of_max = i
+
+# print(maximum, m_name, m_country, m_area)
+print(depths[index_of_max], names[index_of_max], \
+	countries[index_of_max], areas[index_of_max])
+```
+
+3.4.the shortest students
+
+```python
+STUDENTS = 100
+names = [None] * STUDENTS
+heights = [None] * STUDENTS
+	
+for i in range(STUDENTS):
+	names[i] = input("Enter name for student No " + \
+					str(i + 1) + ": ")
+	heights[i] = float(input("Enter his or her heights: "))
+
+minimum = min(heights) # Ok
+
+print("The following students have got the shortest height:")
+for i in range(STUDENTS):
+	if heights[i] == minimum: # == min(heights): No
+		print(names[i])
+```
+
+### 9.12 在数据结构中查找元素
+
+#### 1.在可能包含多个相同值的列表中查找
+
+```
+# 公式：
+needle = float(input("Enter a value to search: "))
+found = False
+for i in range(ELEMENTS):
+	if haystack[i] == needle:
+		print(needle, "found at position:", i)
+		found = True
+if found == False:
+	print("nothing found!")
+```
+
+1.1显示所有相同名字的姓氏
+
+```python
+PEOPLE = 100
+first_name = [None] * PEOPLE
+last_name = [None] * PEOPLE
+
+for i in range(PEOPLE):
+	first_name[i] = input("Enter first name: ")
+	last_name[i] = input("Enter last name: ")
+
+needle = input("Enter a first name to search: ")
+
+found = False
+for i in range(PEOPLE):
+	if first_name[i] == needle:
+		print(last_name[i])
+		found = True
+if found == False:
+	print("No one found!")
+```
+
+#### 2.在包含唯一值的数据结构中进行查找
+
+```
+# 公式：
+needle = float(input("Enter a value to search: "))
+found = False
+for i in range(ELEMENTS):
+	if haystack[i] == needle:
+		print(needle, "found at position:", i)
+		found = True
+		break
+		
+if found == False:
+	print("nothing found!")
+```
+
+2.1查找给定的社会安全号码（SSN）
+
+在美国，SSN：一个9位数的身份号码用于社会保障。该程序基于SSN查找并显示相应的名字和姓氏。
+
+```python
+PEOPLE = 100
+SSNs = [None] * PEOPLE
+first_name = [None] * PEOPLE
+last_name = [None] * PEOPLE
+
+for i in range(PEOPLE):
+	SSNs[i] = input("Enter SSN: ")
+	first_name[i] = input("Enter first name: ")
+	last_name[i] = input("Enter last name: ")
+
+needle = input("Enter an SSN to search: ")
+
+found = False
+for i in range(PEOPLE):
+	if SSNs[i] == needle:
+		print(first_name[i], last_name[i])
+		found = True
+		break
+
+if found == False:
+	print("Nothing found!")
+```
+
+## 第十章　函数
 

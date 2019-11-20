@@ -1,5 +1,5 @@
 import turtle
-# import random
+import random
 # a = int(input("Enter the length of the base: "))
 # b = int(input("Enter the length of the height: "))
 
@@ -76,7 +76,7 @@ import turtle
 wn = turtle.Screen()
 george = turtle.Turtle()
 george.shape("turtle")
-turtle.delay(50)
+# turtle.delay(50)
 
 # rect slowly-----------------
 # for i in range(4):
@@ -196,32 +196,34 @@ turtle.delay(50)
 
 # random star----------------------
 # Don't forget import random
-# turtle.delay(0)
-# for star in range(10):
-# 	a = random.randrange(-200, 200)
-# 	b = random.randrange(-200, 200)
-# 	george.penup()
-# 	george.goto(a, b)
-# 	george.pendown()
+turtle.delay(0) # Mac 很慢 底下两句也没解决
+# turtle.speed(0)
+# turtle.Turtle().screen.delay(0)
+for star in range(1):
+	a = random.randrange(-200, 200)
+	b = random.randrange(-200, 200)
+	george.penup()
+	george.goto(a, b)
+	george.pendown()
 
-# 	points = random.randrange(5, 23, 2)
+	points = random.randrange(5, 23, 2)
 
-# 	length = random.randrange(10, 100)
-# 	for i in range(points):
-# 		george.forward(length)
-# 		george.right(180 / points * (points - 1))
+	length = random.randrange(10, 100)
+	for i in range(points):
+		george.forward(length)
+		george.right(180 / points * (points - 1))
 
 # 
-george.pensize(3)
-flag = False
-for x in range(18):
-	george.forward(100)
+# george.pensize(3)
+# flag = False
+# for x in range(18):
+# 	george.forward(100)
 
-	if flag == False:
-		george.right(110)
-	else:
-		george.left(150)
+# 	if flag == False:
+# 		george.right(110)
+# 	else:
+# 		george.left(150)
 
-	flag = not flag
+# 	flag = not flag
 
 wn.exitonclick()
