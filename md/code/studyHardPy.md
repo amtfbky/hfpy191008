@@ -1350,4 +1350,615 @@ for j in range(1, 4): # and inner loop starts over and
 	print(i, j)
 ```
 
+```python
+for i in range(3):
+	for j in range(4):
+		print("I love you!Mum!") # 3x4=12
+```
+
+#### exercise
+
+1.a=?
+
+```python
+a = 1
+i = 5
+while i <= 7: # 5 6 7
+	for j in range(1, 5, 2): # 1 3
+		a *= 2
+	i += 1
+print(a) # 64
+```
+
+### 7.4 技巧和窍门
+
+#### 7.4.1 “终极”规则
+
+initialize var
+
+while Boolean_Expression(var):
+
+​    \# Here goes a statement or block of statements
+
+​    Update/alter var
+
+- initialize var*是任何将初始值赋值给变量var的语句，如：var=input()，或var=value
+- Boolean_Expression(var)是任何从简单到复杂的布尔表达式，这取决于变量var
+- Update/alter var是任何用于更改var值的语句，如：var=input()，或var=value以及复合赋值运算符的赋值语句。该语句必须在计算循环结构的布尔表达式之前？？？
+
+```python
+# example1
+a = int(input()) # Initialization of a
+while a > 0: # A Boolean expression dependent on a
+    print(a)
+    a -= 1 # Update/alteration of a
+
+# example2
+total = 0 # Initialization of total
+while total < 1000: # A Boolean expression dependent on total
+    b = int(input())
+    total += b # Update/alteration of total
+    
+# example3
+a = int(input()) # Initialization of a
+b = int(input()) # Initialization of b
+while a + b > 0: # A Boolean expression dependent on a and b
+    print(a, b)
+    a = int(input()) # Update/alteration of a
+	b = int(input()) # Update/alteration of b
+```
+
+例1：
+
+提示反复输入数字，输到5次结束。
+
+```python
+positives_given = 0 # Initialization of positives_given
+while positives_given != 5: # A Boolean expression dependent on positives_given
+    # Here goes a statements or block of statements
+	a = float(input("Enter a number: "))
+	if a > 0:
+		positives_given += 1 # Update/alteration of positives_given
+print("positives_given:", positives_given)
+```
+
+#### 7.4.2 跳出循环
+
+```python
+text = "I love Mum!"
+letter = input("Enter a letter to search: ")
+
+found = False
+for a in text: # no break
+	if a == letter:
+		found = True
+        break # 到这里程序会跳出循环
+if found == True:
+	print("Letter", letter, "found!")
+```
+
+#### 7.4.3 无限循环及如何避免
+
+```python
+i = 1
+while i != 5:
+	print("HI, Python!") # Ctrl + C for stop
+
+i = 1
+while i != 5:
+	print("I love Mum!") # Ctrl + C for stop
+	i += 2
+```
+
+```python
+i = 1
+while i < 5:
+	print("I love Mum!")
+	i += 2
+```
+
+>### 注意
+>
+>永远不要使用比较运算符==和!=检查计数器变量i，可以使用比较运算符<、<、=>和>=。它们保证当计数器变量超过终止值时执行流退出循环。
+
+#### 7.4.4 “由内而外”法
+
+该方法帮助你由内而外地学习“算法思维”：首先操作和设计内部（嵌套）结构，然后，随着程序的开发，添加越来越多的结构，嵌套前一个结构。
+
+```python
+i = 1
+for j in range(1, 10):
+	print(i, "x", j, "=", i * j, end = "\t")
+```
+
+```python
+for i in range(1, 10):
+    """Here goes the code that displays one single line of the multiplication table"""
+	for j in range(1, 10):
+		print(i, "x", j, "=", i * j, end = "\t")
+	print()
+```
+
+#### 7.4.5 exercise
+
+1.1+2+3+...+100
+
+```python
+s = 0
+i = 1
+
+s += i
+i += 1
+
+s += i
+i += 1
+
+...
+
+s += i
+i += 1
+
+print(s)
+```
+
+```python
+s = 0
+i = 1
+
+while i <= 100:
+	s += i
+	i += 1
+
+print(s)
+```
+
+```python
+s = 0
+for i in range(1, 101):
+	s += i
+
+print(s)
+```
+
+2.2x4x6x8x10
+
+```python
+p = 1
+for i in range(2, 12, 2):
+	p *= i
+print(p)
+```
+
+3.平均值
+
+```python
+total = 0
+count = 0
+for i in range(10):
+	a = float(input("Enter a number: "))
+	if a > 0:
+		total += a
+		count += 1
+
+if count != 0:
+	print(total / count)
+else:
+	print("No positives entered!")
+```
+
+4.10对数字，count for a>b and a<b
+
+```python
+count_a = 0
+count_b = 0
+
+for i in range(10):
+	a = int(input("Enter number A: "))
+	b = int(input("Enter number B: "))
+	if a > b:
+		count_a += 1
+	elif b > a: # else: b>a,b=a
+		count_b += 1
+
+print(count_a, count_b)
+```
+
+5.1~999,count1 for 1-9,count2 for 10-99,count3 for 100-999
+
+```python
+count1 = 0
+count2 = 0
+count3 = 0
+for i in range(20):
+	a = float(input("Enter a number: "))
+	if a <= 9:
+		count1 += 1
+	elif a <= 99:
+		count2 += 1
+	else:
+		count3 += 1
+print(count1, count2, count3)
+```
+
+6.反复输入数字，直到它们的总和>1000，count for numbers；因为不知道确切的迭代次数，所以不能用for结构。
+
+```python
+count = 0 # This is not here due to the Ultimate Rule!
+total = 0 # Initialization of total
+while total <= 1000: # A Boolean expression dependent on total
+    # here goes a statement or block of statements
+	a = float(input("Enter a number: "))
+	count += 1
+	total += a # Update/alteration of total
+print(count)
+```
+
+7.迭代用户期望的次数：输入两个数字，a **= b，repeat?
+
+```python
+answer = "yes" # Initialization of answer
+while answer.upper() == "YES":
+    """Here goes the code that prompts the user to enter two numbers and then calculates and displays the first number raised to the power of the second one.下面是一段代码，提示用户输入两个数字，然后计算并显示第一个数字，并将其提升为第二个数字的幂。"""
+	a = int(input("Enter number A: "))
+	b = int(input("Enter number B: "))
+
+	result = a ** b
+	print("The result is:", result)
+	
+    # Update/alteration of answer
+	answer = input("Would you like to repeat?")
+```
+
+8.寻找体重最小值，并显示。
+
+```python
+w = int(input("Enter a weight: "))
+minimum = w
+for i in range(3):
+	w = int(input("Enter a weight: "))
+	if w < minimum:
+		minimum = w
+print(minimum)
+```
+
+9.将0-100（温度增量值为0.5）华氏温度转换为开尔文温度。
+
+```python
+fahrenheit = 0
+while fahrenheit <= 100:
+	kelvin = (fahrenheit + 459.67) / 1.8
+	print("Fahrenheit:", fahrenheit, "Kelvin:", kelvin)
+	fahrenheit += 0.5
+```
+
+>### 提示
+>
+>for结构的range()函数仅支持整形增量值，所以这里只能用while结构。
+
+10.棋盘上的大米共多少粒：国际象棋第一个格子1粒米，第二个格子2粒米，第三个格子4粒米，依此类推，每一个格子的米粒数量是前一个格子的两倍。
+
+```python
+grains = 1
+total = 1
+for i in range(63):
+	grains *= 2
+	total += grains
+print(total) # 18446744073709551615
+```
+
+11.guess secret:1-100
+
+```python
+import random
+secret_number = random.randrange(1, 101)
+attempts = 1
+guess = int(input("Enter a guess: ")) # Initialization of guess
+while guess != secret_number:
+    # Here goes the rest of the code
+	if guess > secret_number:
+		print("Your guess is bigger than my secret number.Try again.")
+	else:
+		print("Your guess is smaller than my secret number.Try again.")
+
+	attempts += 1
+	guess = int(input("Enter a guess: ")) # Update/alteration of guess
+
+print("You get it!")
+print("Attempts:", attempts)
+```
+
+## 第八章 海龟绘图
+
+Python的一个功能，在一个窗口内一只虚拟海龟四处移动并绘制形状。
+
+3个属性：位置、方向和笔。
+
+### 8.1 x-y平面
+
+### 8.2 begin
+
+```python
+import turtle # Import turtle module
+
+wn = turtle.Screen() # Create a graphics window
+george = turtle.Turtle() # Create a new turtle. Let's call it "george"
+george.shape("turtle") # Change George to a real turtle
+
+george.forward(50) # Move George forward by 50 pixels
+
+wn.exitonclick() # Wait for a user click on the graphics window
+```
+
+```python
+import turtle
+
+a = int(input("Enter the length of the base: "))
+b = int(input("Enter the length of the height: "))
+wn = turtle.Screen()
+george = turtle.Turtle()
+george.shape("turtle")
+
+george.forward(a)
+george.left(90)
+george.forward(b)
+george.left(90)
+george.forward(a)
+george.left(90)
+george.forward(b) # rect
+
+wn.exitonclick()
+```
+
+```python
+import turtle
+
+wn = turtle.Screen()
+george = turtle.Turtle()
+george.shape("turtle")
+
+george.forward(100)
+george.setheading(270)
+george.forward(100)
+george.setheading(135)
+george.forward(141) # 直角三角形
+
+wn.exitonclick()
+```
+
+```python
+import turtle
+
+wn = turtle.Screen()
+george = turtle.Turtle()
+george.shape("turtle")
+turtle.delay(50) # slowly to see draw
+
+# Draw a triangle
+george.forward(100)
+george.left(120)
+george.forward(100)
+george.left(120)
+george.forward(100)
+george.left(120)
+
+wn.exitonclick()
+```
+
+```python
+import turtle
+
+wn = turtle.Screen()
+george = turtle.Turtle()
+george.shape("turtle")
+
+# Change pen's color to blue
+george.color("blue")
+george.forward(200)
+george.left(90)
+george.forward(100)
+george.left(90)
+george.forward(200)
+george.left(90)
+george.forward(100)
+
+# Move George to the top left corner of the tectangle
+george.penup() # Pull pen up
+george.backward(100)
+george.pendown() # Pull pen down
+
+# Draw the red roof
+george.setheading(45)
+# george.left(135)
+george.color("red")
+george.forward(141)
+george.right(90)
+george.forward(141) # house
+
+wn.exitonclick()
+```
+
+```python
+george.goto(-100, 200)
+george.goto(0, 0)
+george.goto(-100, -200)
+george.goto(0, 0)
+george.goto(100, -200)
+george.goto(0, 0)
+george.goto(100, 200)
+george.goto(0, 0) # x
+```
+
+### 8.3 for-draw
+
+```python
+for i in range(4):
+	george.forward(50)
+	george.left(90)
+```
+
+```python
+for i in range(4):
+	george.forward(50)
+	george.left(90)
+
+# Move the turtle to pole position
+george.penup()
+george.backward(200)
+george.pendown()
+
+# First square
+for i in range(4):
+	george.forward(50)
+	george.left(90)
+
+# Move the turtle to pole position
+# where next square will be drawn
+george.penup()
+george.forward(100)
+george.pendown()
+
+# second square
+for i in range(4):
+	george.forward(50)
+	george.left(90)
+
+george.penup()
+george.forward(100)
+george.pendown()
+```
+
+```python
+george.penup()
+george.backward(200)
+george.pendown()
+
+for square in range(2):
+	# Draw a square
+	for i in range(4):
+		george.forward(50)
+		george.left(90)
+
+	george.penup()
+	george.forward(100)
+	george.pendown()
+```
+
+#### exercise
+
+1.three no same square
+
+```python
+george.penup()
+george.backward(330)
+george.pendown()
+
+for multiplier in range(1, 4):
+	# Draw a square
+    # 50 100 150
+	for i in range(4):
+		george.forward(50 * multiplier)
+		george.left(90)
+
+	george.penup()
+	george.forward(50 * multiplier)
+	george.forward(30)
+	george.pendown()
+```
+
+2.no same house
+
+```python
+george.penup()
+george.backward(330)
+george.pendown()
+
+for multiplier in range(1, 4):
+	# Draw a rectangle
+	george.forward(100 * multiplier)
+	george.left(90)
+	george.forward(50 * multiplier)
+	george.left(90)
+	george.forward(100 * multiplier)
+	george.left(90)
+	george.forward(50 * multiplier)
+
+	# Move George to the top left corner of the rectangle
+	george.penup()
+	george.backward(50 * multiplier)
+	george.pendown()
+
+	# Draw the roof
+	george.setheading(45)
+	george.forward(70.5 * multiplier)
+	george.right(90)
+	george.forward(70.5 * multiplier)
+
+	# Move next
+	george.penup()
+	george.setheading(270) # 360-90=downward
+	george.forward(50 * multiplier)
+	george.setheading(0) # 0=forward
+	george.forward(30)
+	george.pendown()
+```
+
+3.duobianxing
+
+```python
+george.pensize(2)
+sides = 5 # 6 7 8 ...
+for i in range(sides):
+	george.forward(100)
+	george.right(360 / sides)
+```
+
+4.wujiao star
+
+```python
+george.pensize(3)
+points = 5 # 7 9 ...
+for i in range(points):
+	george.forward(150)
+	george.right(180 / points * (points -1))
+```
+
+5.random star
+
+```python
+import random
+turtle.delay(0)
+for star in range(10):
+	a = random.randrange(-200, 200)
+	b = random.randrange(-200, 200)
+	george.penup()
+	george.goto(a, b)
+	george.pendown()
+
+	points = random.randrange(5, 23, 2)
+
+	length = random.randrange(10, 100)
+	for i in range(points):
+		george.forward(length)
+		george.right(180 / points * (points - 1))
+```
+
+6.if star
+
+```python
+george.pensize(3)
+flag = False
+for x in range(18):
+	george.forward(100)
+
+	if flag == False:
+		george.right(110)
+	else:
+		george.left(150)
+
+    # This statement reverses flag from True to False and vice versa
+    # 此语句将标志从True反转为False，反之亦然
+	flag = not flag
+```
+
+
 
