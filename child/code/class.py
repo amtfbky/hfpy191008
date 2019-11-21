@@ -82,7 +82,7 @@
 # x.myMethod()
 
 # ---------将初始值传递给构造方法------------
-# class Titan:
+# class hhh:
 # 	name = None
 # 	gender = None
 
@@ -90,15 +90,15 @@
 # 		self.name = n
 # 		self.gender = g
 
-# titan1 = Titan("abc", "male")
-# titan2 = Titan("bcd", "male")
-# titan3 = Titan("cde", "female")
-# titan4 = Titan("def", "female")
-# print(titan1.name)
-# print(titan1.gender)
+# hhh1 = hhh("abc", "male")
+# hhh2 = hhh("bcd", "male")
+# hhh3 = hhh("cde", "female")
+# hhh4 = hhh("def", "female")
+# print(hhh1.name)
+# print(hhh1.gender)
 
 
-# class Titan:
+# class hhh:
 # 	name = None
 # 	gender = None
 # 	def __init__(self, naem, gender):
@@ -107,21 +107,21 @@
 # 		self.gender = gender
 
 # 可以简写
-# class Titan:
+# class hhh:
 # 	def __init__(self, name, gender):
 # 		self.name = name
 # 		self.gender = gender
 
 
-# titan1 = Titan("abc", "male")
-# titan2 = Titan("bcd", "male")
-# titan3 = Titan("cde", "female")
-# titan4 = Titan("def", "female")
+# hhh1 = hhh("abc", "male")
+# hhh2 = hhh("bcd", "male")
+# hhh3 = hhh("cde", "female")
+# hhh4 = hhh("def", "female")
 
-# print(titan1.name, "-", titan1.gender)
-# print(titan2.name, "-", titan2.gender)
-# print(titan3.name, "-", titan3.gender)
-# print(titan4.name, "-", titan4.gender)
+# print(hhh1.name, "-", hhh1.gender)
+# print(hhh2.name, "-", hhh2.gender)
+# print(hhh3.name, "-", hhh3.gender)
+# print(hhh4.name, "-", hhh4.gender)
 
 
 # -------类变量和实例变量---------------
@@ -200,7 +200,9 @@
 
 # class FahrenheitToCelsius:
 # 	def __init__(self, value):
-# 		self.temperature = value
+# 		# self.temperature = value # 这里我居然抄都抄错了
+# 		# 底下x号的都是我抄错的关系——产生错误的理解和推断
+# 		self.set_temperature(value)
 
 # 	def get_temperature(self):
 # 		return 5.0 / 9.0 * (self.temperature - 32.0)
@@ -211,18 +213,20 @@
 # 		else:
 # 			raise ValueError("There is no temperature below -459.67")
 
-# 第一种情形：当没有调用set方法时，－500的值不会报警
-# x = FahrenheitToCelsius(-500)
+# xxxxxxx 第一种情形：当没有调用set方法时，－500的值不会报警 xxxxxxxxx
+# 哦，我居然还在这里自作聪明地总结三种情形，可笑可叹啊！学习如此马虎，唉！！！
+# 没有超过-459.67不会报错！！！！！！！！！！！
+# x = FahrenheitToCelsius(-50)
 # print(x.get_temperature())
 
-# 第二种情形：当调用set方法后，－50没有达到报警要求，也不会报警
+# xxxxxx 第二种情形：当调用set方法后，－50没有达到报警要求，也不会报警 xxx
 # x = FahrenheitToCelsius(-50)
 # print(x.get_temperature())
 
 # x.set_temperature(-50)
 # print(x.get_temperature())
 
-# 第三种情形：当调用set方法后，但temperature字段的值仍然可以通过其名称直接更改
+# xxx第三种情形：当调用set方法后，但temperature字段的值仍然可以通过其名称直接更改
 # 还是不会报警
 # x = FahrenheitToCelsius(-50)
 # print(x.get_temperature())
@@ -236,61 +240,61 @@
 
 # 属性是一个类成员——提供读取写入或计算私有值的机制
 
-class FahrenheitToCelsius:
-	def __init__(self, value):
-		self.set_temperature(value)
+# class FahrenheitToCelsius:
+# 	def __init__(self, value):
+# 		self.set_temperature(value)
 
-	def get_temperature(self):
-		return 5.0 / 9 * (self._temperature - 32)
+# 	def get_temperature(self):
+# 		return 5.0 / 9 * (self._temperature - 32)
 
-	def set_temperature(self, value):
-		if value >= -459.67:
-			self._temperature = value
-		else:
-			raise ValueError("There is no temperature below -459.67")
+# 	def set_temperature(self, value):
+# 		if value >= -459.67:
+# 			self._temperature = value
+# 		else:
+# 			raise ValueError("There is no temperature below -459.67")
 
 # define a property
-temperature = property(get_temperature, set_temperature)
+# temperature = property(get_temperature, set_temperature)
 # NameError: name 'get_temperature' is not defined
 
 # main code starts here
-x = FahrenheitToCelsius(-50)
+# x = FahrenheitToCelsius(-50)
 
-print(x.temperature)
-x.temperature = -500
-print(x.temperature)
+# print(x.temperature)
+# x.temperature = -500
+# print(x.temperature)
 
 # x = FahrenheitToCelsius(0)
 # x.set_temperature(-100)
 # x.temperature = -100
 
 
-# class FahrenheitToCelsius:
-# 	def __init__(self, value):
-# 		self.temperature = value # 第三：=value no (value)
+class FahrenheitToCelsius:
+	def __init__(self, value):
+		self.temperature = value # 第三：=value no (value)
 
-# 	@property
-# 	def temperature(self):
-# 		return 5.0 / 9 * (self._temperature - 32)
-# 		# 第一：9 no 9.0 第二：_tem no tem　第五：32 no 32.0
+	@property
+	def temperature(self):
+		return 5.0 / 9 * (self._temperature - 32)
+		# 第一：9 no 9.0 第二：_tem no tem　第五：32 no 32.0
 
-# 	@temperature.setter
-# 	def temperature(self, value):
-# 		if value >= -459.67:
-# 			self._temperature = value
-# 		else:
-# 			raise ValueError("There is no temperature below -459.67")
+	@temperature.setter
+	def temperature(self, value):
+		if value >= -459.67:
+			self._temperature = value
+		else:
+			raise ValueError("There is no temperature below -459.67")
 
-# # main code starts here
-# x = FahrenheitToCelsius(-50)
+# main code starts here
+x = FahrenheitToCelsius(-50)
 
 # print(x.temperature)
 
 # x.temperature = -60
 # print(x.temperature)
 
-# x.temperature = -500
-# print(x.temperature)
+x.temperature = -500
+print(x.temperature)
 
 
 

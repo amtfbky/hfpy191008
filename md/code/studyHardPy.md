@@ -2744,3 +2744,856 @@ if found == False:
 
 ## 第十章　函数
 
+### 10.1 什么是函数？
+
+```
+def get_sum(num1, num2):
+	result = num1 + num2
+	return result
+
+def get_sum(num1, num2):
+	return num1 + num2
+
+def get_sum_dif(num1, num2):
+	s = num1 + num2
+	d = num1 - num2
+	return s, d
+```
+
+
+
+### 10.2　调用函数
+
+```python
+def cube(num):
+	result = num ** 3
+	return result
+
+x = float(input("Num: "))
+ # the 1st
+cb = cube(x)
+y = cb + 1 / x
+print(y)
+# the 2nd
+y = cube(x) + 1 / x
+print(y)
+# the 3rd
+print(cube(x) + 1 / x)
+```
+
+```python
+def get_msg():
+	msg = "How do you do?"
+	return msg
+
+print("Nice to meet you!")
+a = get_msg()
+print(a)
+```
+
+```python
+def display(color):
+	msg = "There is " + color + " in the rainbow"
+	return msg
+print(display("red"))
+print(display("yellow"))
+print(display("blue"))
+```
+
+```python
+def display(color, exists):
+	neg = ""
+	if exists == False:
+		neg = "n't any"
+	return "There is" + neg + " " + color + " in the rainbow"
+
+print(display("red", True))
+print(display("yellow", True))
+print(display("black", False))
+```
+
+```python
+def get_fullname():
+	first_name = input("Enter first name: ")
+	last_name = input("Enter last name: ")
+	return first_name, last_name
+
+fname, lname = get_fullname()
+print("First name:", fname)
+print("Last name:", lname)
+```
+
+### 10.3 no return
+
+```
+def display_sum(num1, num2):
+	result = num1 + num2
+	print(result)
+```
+
+### 10.4 use the no return
+
+```python
+def display_line():
+	print("----------------------------")
+print("Hello Python!")
+display_line()
+print("Nice to study you!")
+display_line()
+print("Would you like Coffow?")
+display_line()
+```
+
+```python
+def display_line(length):
+	for i in range(length):
+		print("-", end = "")
+	print()
+
+print("Hello Python!")
+display_line(15)
+print("Nice to study you!")
+display_line(18)
+print("Would you like Coffow?")
+display_line(22)
+```
+
+>### 切记：
+>
+>没有返回值的函数，不能直接赋给变量：a = display_line(15)；
+>
+>也不能在语句中调用它：print(display_line(15))。
+
+### 10.5　形参和实参
+
+- 函数包含的参数叫形参
+- 调用函数时传递给函数的参数叫实参
+- 两者之间是一对一的匹配关系
+
+```python
+def divide(n1, n2):
+	result = n1 / n2
+	return result
+
+x = float(input("Enter a number 1: "))
+y = float(input("Enter a number 2: "))
+
+w = divide(x, y)
+
+print(w)
+```
+
+### 10.6　函数如何运行，即调用函数的步骤
+
+1.主代码中语句的执行被中断
+
+2.实参列表中变量的值或表达式的结果被传递（赋值）给形参列表中对应的形参（变量），同时执行流转向函数定义所在的位置
+
+3.执行函数中语句
+
+4.当执行流到达函数的末尾时：
+
+- 将返回值从函数返回到主代码，执行流从调用该函数之前的地方继续执行
+- 无返回值时，执行流只需从调用该函数之前的地方继续执行
+
+```python
+def maximum(n1, n2):
+	m = n1
+	if n2 > m:
+		m = n2
+	return m
+a = float(input("Enter number1: "))
+b = float(input("Enter number2: "))
+
+c = maximum(a, b)
+print(c)
+```
+
+### 10.7 sameVarName
+
+```python
+def f1():
+	sameVarName = 1
+	print(sameVarName)
+def f2(sameVarName):
+	print(sameVarName)
+sameVarName = 3
+print(sameVarName)
+f1()
+f2(2)
+print(sameVarName)
+```
+
+```python
+def f1(test):
+	test += 1
+	print(test)
+
+test = 5
+f1(test)
+print(test)
+```
+
+>### 注意
+>
+>函数中变量只在被调用时才会创建，当被调用完，这些变量就会被清除。
+
+### 10.8 函数调用函数
+
+```python
+def add(n1, n2):
+	result = n1 + n2
+	return result
+
+def display_sum(n1, n2):
+	print(add(n1, n2))
+
+a = int(input("Enter number1: "))
+b = int(input("Enter number2: "))
+
+display_sum(a, b)
+```
+
+>### 提示
+>
+>函数编写顺序没有限制，display_sum()在add()之前是可以的。
+
+### 10.9　默认参数值和关键字参数
+
+形参使用默认值，即没有传递任何值给形参。
+
+```python
+def prepend_title(name, title = "Mr"):
+	return title + " " + name
+print(prepend_title("zhangsan"))
+print(prepend_title("liping", "Ms"))
+```
+
+>### 提示
+>
+>默认值即“可选参数”，必须写在不可选参数的右侧。
+
+```python
+def prepend_title(first_name, last_name, title = "Mr", reverse = False):
+	if reverse == False:
+		return title + " " + first_name + " " + last_name
+	else:
+		return title + " " + last_name + " " + first_name
+print(prepend_title("John", "King"))
+print(prepend_title("Maria", "Myles", "Ms"))
+print(prepend_title("Maria", "Myles", "Ms", True))
+print(prepend_title("John", "King", reverse = True))
+```
+
+### 10.10 变量的作用域
+
+- 变量的作用域指该变量的作用范围
+- 在Python中，变量有局部（函数中的变量）或全局作用域（函数外的变量）
+- 局部变量只能在函数中使用；全局变量可以在函数内和函数外的主代码中使用
+
+```python
+def display_val():
+	print(test)
+
+test = 8
+display_val() # 8
+print(test) # 8
+
+# 内存中已经声明了全局变量test和局部变量test
+def display_val():
+	test = 9
+	print(test)
+
+test = 8
+display_val() # 9
+print(test) # 8
+```
+
+```python
+def display_val():
+	print(test)
+	#UnboundLocalError: local variable 'test' referenced before assignment
+	test = 9
+	print(test)
+
+test = 8
+display_val()
+print(test)
+```
+
+```python
+def display_val():
+	global test
+	print(test) # 8
+	test = 9
+	print(test)
+
+test = 8
+display_val() # 9
+print(test) # 9
+```
+
+>### 提示
+>
+>一个全局变量的值在函数内被改变，函数外的同名变量值也改变。
+
+```python
+def display_val():
+	a = 8
+	b = 3
+	print(a, b)
+
+def display_other_val():
+	b = 2
+	print(a, b)
+
+a = 15
+print(a)
+display_val()
+display_other_val()
+print(a)
+```
+
+### exercise
+
+1.sum
+
+```python
+def total(a, b):
+	# s = a + b
+	return a + b
+n1 = float(input("Enter number1: "))
+n2 = float(input("Enter number2: "))
+
+# result = total(n1, n2)
+print("The sum of", n1, "+", n2, "is", total(n1, n2))
+```
+
+2.简单的货币转换器
+
+```python
+def display_menu():
+	print("1. Convert USD to EUR")
+	print("2. Convert EUR to USD")
+	print("3. Exit")
+	print("-----------------------")
+	print("Enter a choice: ", end = "")
+
+while True:
+	display_menu()
+	choice = int(input())
+
+	if choice == 3:
+		print("Bye!")
+		break
+	else:
+		amount = float(input("Enter an amount: "))
+		if choice == 1:
+			print(amount, "USD = ", amount * 0.94, "EUR")
+		else:
+			print(amount, "EUR = ", amount / 0.94, "USD")
+```
+
+3.较完整的货币转换器
+
+```python
+def display_menu():
+	print("1. Convert USD to EUR")
+	print("2. Convert USD to GBP")
+	print("3. Convert USD to JPY")
+	print("4. Convert USD to CAD")
+	print("5. Exit")
+	print("-----------------------")
+	print("Enter a choice: ", end = "")
+
+def USD_to_EUR(value):
+	return value * 0.94
+def USD_to_GBP(value):
+	return value * 0.79
+def USD_to_JPY(value):
+	return value * 113
+def USD_to_CAD(value):
+	return value * 1.33
+
+while True:
+	display_menu()
+	choice = int(input())
+
+	if choice == 5:
+		print("Bye!")
+		break
+	else:
+		amount = float(input("Enter an amount in US dollars: "))
+		if choice == 1:
+			print(amount, "USD = ", USD_to_EUR(amount), "EUR")
+		elif choice == 2:
+			print(amount, "USD = ", USD_to_GBP(amount), "GBP")
+		elif choice == 3:
+			print(amount, "USD = ", USD_to_JPY(amount), "JPY")
+		elif choice == 4:
+			print(amount, "USD = ", USD_to_CAD(amount), "CAD")
+```
+
+4.求正整数的平均值
+
+```python
+def tst_int(n):
+	if n == int(n):
+		return True
+	else:
+		return False
+
+total = 0
+count = 0
+a = float(input("Enter a number: "))
+while tst_int(a) == True: # 如果函数返回False，退出循环
+	if a > 0:
+		total += a
+		count += 1
+	a = float(input("Enter a number: "))
+if count > 0:
+	print(total / count)
+```
+
+>### 提示
+>
+>注意if count > 0，如果一开始就输入了一个实数，count则为0，0不能作为除数，所以这样就避免了除零错误。
+
+5.掷骰子：
+
+- dice函数：返回1－6的随机整数
+- search_and_count函数：接收一个整数和一个列表，并返回该整数在列表中的次数
+- 使用100个随机整数（1－6）填充一个列表，用户输入一个整数（1－6）
+- 显示用户给的整数在列表中存在多少次
+
+```python
+import random
+ELEMENTS = 100
+def dice():
+	return random.randrange(1, 7)
+
+def search_and_count(x, a):
+	count = 0
+	for i in range(ELEMENTS):
+		if a[i] == x:
+			count += 1
+	return count
+
+a = [None] * ELEMENTS
+
+for i in range(ELEMENTS):
+	a[i] = dice()
+
+x = int(input("Enter a number 1-6: "))
+print("Given value exists in the list")
+print(search_and_count(x, a), "times")
+
+```
+
+## 第十一章　面向对象编程
+
+### 11.1　什么是面向对象编程，OOP
+
+- 一种聚焦于对象的编程风格
+- 将数据和功能组合在一起，并将它们包围在称为对象的东西内
+- 轻松维护代码，他人轻松使用
+
+OOP聚焦于对象：用一辆汽车举例
+
+- 属性：品牌、型号、颜色和车牌等等
+- 动作：启动或熄火、加速或刹车或停车等等
+
+在OOP中，这辆车就是一个对象，它具有特定属性（字段），执行特定动作（方法）。
+
+那如何创建一个对象呢？
+
+- 只需一个汽车的类，就象一枚图章
+- 用这枚图章印出许多汽车，然后给它们涂上颜色，并用特定的属性填充每辆车的字段
+- 创建一个新对象（类的实例）的过程称为“实例化”
+- 类是一个模板，每个对象都是根据类创建的。每个类只执行一个任务，所以在构建整个应用程序时不止使用一个类
+
+### 11.2　Python中的类和对象
+
+```python 
+class Car:
+	# define four fields
+	brand = ""
+	model = ""
+	color = ""
+	license_plate = ""
+
+	# define method turn_on
+	def turn_on(self):
+		print("The car turns on")
+
+	# define method turn_off
+	def turn_off(self):
+		print("The car turns off")
+
+	# define method accelerate
+	def accelerate(self):
+		print("The car accelerate")
+
+# 实例化，创建汽车对象car1，car2
+car1 = Car()
+car2 = Car()
+
+# 对象名称.字段或方法名称＝"值"
+car1.brand = "Linken"
+car1.model = "6"
+car1.color = "red"
+car1.license_plate = "CD7834"
+
+car2.brand = "Hongqi"
+car2.model = "Focus"
+car2.color = "black"
+car2.license_plate = "JK803"
+
+print(car1.brand)
+print(car2.brand)
+
+# 调用对象的方法
+car1.turn_on()
+car2.accelerate()
+```
+
+### 11.3　构造方法和关键字self
+
+\_\_init\_\_：构造方法
+
+- Python中有一个具有特殊角色的方法
+- 在创建对象时自动执行
+- 在这个方法内可以完成任何的对象初始化操作
+
+```python 
+class Person:
+	def __init__(self):
+		print("An object was created")
+
+p1 = Person()
+p2 = Person()
+```
+
+self：关键字self是对一个对象本身的引用
+
+```python
+class Person:
+	name = None
+	age = None
+
+	def say_info(self):
+		print("I am ", self.name)
+		print("I am ", self.age, "years old")
+
+# Main code starts here
+p1 = Person()
+p1.name = "zhangsan"
+p1.age = 9
+p1.say_info() # call the method say_info() of the object p1
+
+p2 = Person()
+p2.name = "lisi"
+p2.age = 10
+p2.say_info() # call the method say_info() of the object p1
+```
+
+>### 提示
+>
+>self可以换成其它名称，但self是Python的一种约定俗成。
+
+问题：为什么要在方法say_info()中以self.name和self.age的方式引用name和age呢？真的有必要用self关键字吗？
+
+简单的答案：在方法中可能有两个额外的同名的（name和age）局部变量。因此需要一种方法来区分这些局部变量和对象的字段。
+
+如果您还感到困惑，看下面的例子：
+
+```python
+class MyClass:
+	b = None # this is a field
+
+	def myMethod(self):
+		b = "***" # this is a local variable
+		print(b, self.b, b)
+
+x = MyClass()
+x.b = "Hello"
+x.myMethod()
+```
+
+### 11.4 将初始值传递给构造方法
+
+对象创建过程中可用构造方法的形参将初始值传递给构造方法。
+
+```python
+class hhh:
+	name = None
+	gender = None
+
+	def __init__(self, n, g):
+		self.name = n
+		self.gender = g
+
+hhh1 = hhh("abc", "male")
+hhh2 = hhh("bcd", "male")
+hhh3 = hhh("cde", "female")
+hhh4 = hhh("def", "female")
+```
+
+>### 提示
+>
+>即使在构造方法中有三个形参，在调用构造方法的语句中也只有两个实参。这是Python的特点“多做、少写”，不需要传递对象本身。
+
+在Python中，一个字段和一个局部变量（甚至一个方法参数）具有相同的名称是合法的。
+
+```python
+class hhh:
+  # name和gender用于将值传递给构造方法的参数
+	name = None
+	gender = None
+	def __init__(self, name, gender):
+		# fields and arguments can have the same name
+    # self.name和self.gender是用于在对象内存储值的字段
+		self.name = name
+		self.gender = gender
+
+# 可以简写
+class hhh:
+	def __init__(self, name, gender):
+		self.name = name
+		self.gender = gender
+
+hhh1 = hhh("abc", "male")
+hhh2 = hhh("bcd", "male")
+hhh3 = hhh("cde", "female")
+hhh4 = hhh("def", "female")
+
+print(hhh1.name, "-", hhh1.gender)
+print(hhh2.name, "-", hhh2.gender)
+print(hhh3.name, "-", hhh3.gender)
+print(hhh4.name, "-", hhh4.gender)
+```
+
+### 11.5 类变量和实例变量
+
+在构造方法之外声明字段是可以的。
+
+```python
+class HistoryEvents:
+	day = None # this field is declared outside of the constructor
+	           # It is called "class field"
+	def __init__(self):
+		print("object Instantiation")
+
+h1 = HistoryEvents()
+h1.day = "3rd of July"
+
+h2 = HistoryEvents()
+h2.day = "12th of October"
+
+print(h1.day)
+print(h2.day)
+```
+
+也可以在构造方法中声明该字段。
+
+```python
+class HistoryEvents:
+	def __init__(self, day):
+		print("object Instantiation")
+		self.day = day # this field is declared inside the constructor
+		               # It is called "instance field"
+
+h1 = HistoryEvents("3rd of July")
+h2 = HistoryEvents("12th of October")
+
+print(h1.day)
+print(h2.day)
+```
+
+>### 提示
+>
+>在构造方法外部声明的字段叫“类字段”；在构造方法内部声明的字段叫“实例字段”。
+
+哪种编程风格更好？第二种！
+
+- 编写类的正确方法
+- 在某些情况下，当可变数据类型（如列表和字典）用作类字段时，可能会导致“不良结果”
+
+```python 
+class HistoryEvents:
+	events = [] # class field shared by all instances
+
+	def __init__(self, day):
+		self.day = day # Instance field unique to each instance
+
+h1 = HistoryEvents("3rd of July")
+h1.events.append("3421: Declaration of Independence in United States")
+h1.events.append("7899: French troops occupy Amsterdam")
+
+h2 = HistoryEvents("12th of October")
+h2.events.append("789: Byzantine troops occupy Antioch")
+h2.events.append("324: Ohi Day in Greece")
+
+print(h1.events) # 把四个事件都输出了
+```
+
+- 中Python中，永远不要将可变数据类型用作类字段
+- 一般来说，必须尽可能少地使用类字段，类字段越少越好
+
+```python
+class HistoryEvents:
+	def __init__(self, day):
+		self.day = day   # Instance field unique to each instance
+		self.events = [] # Instance field unique to each instance
+
+h1 = HistoryEvents("3rd of July")
+h1.events.append("3421: Declaration of Independence in United States")
+h1.events.append("7899: French troops occupy Amsterdam")
+
+h2 = HistoryEvents("12th of October")
+h2.events.append("789: Byzantine troops occupy Antioch")
+h2.events.append("324: Ohi Day in Greece")
+
+# print(h1.events)
+print(h2.events)
+```
+
+### 11.6 Getter、Setter方法与属性
+
+- 字段是直接在类中声明的变量
+- 面向对象编程的准则宣称一个类的数据应该被隐藏起来防止被意外地更改
+- 当你编写给其他程序员使用的类，你并不想让他们知道类里有什么！类的内部操作应该对外界隐藏
+- 通过不暴露字段，可以隐藏类的内部实现
+- 字段应该保持类的私有性，外界通过get和set方法访问它们
+
+```python
+class FahrenheitToCelsius:
+	def __init__(self, value):
+		self.temperature = value
+
+	def get_temperature(self):
+		return 5.0 / 9.0 * (self.temperature - 32.0)
+
+x = FahrenheitToCelsius(-500)
+print(x.get_temperature())
+```
+
+这个类几乎是完美的，但有一个漏点：它没有考虑到温度不能低于－459.67华氏度（即－273.15摄氏度，绝对零度）。因此，对物理学一无所知的新手程序员可能就会将－500华氏度的值传递给构造方法。
+
+这个类的一个稍微不同的版本可以部分地解决该问题。
+
+```python 
+class FahrenheitToCelsius:
+	def __init__(self, value):
+		self.set_temperature(value)
+
+	def get_temperature(self):
+		return 5.0 / 9.0 * (self.temperature - 32.0)
+
+	def set_temperature(self, value):
+		if value >= -459.67:
+			self.temperature = value
+		else:
+			raise ValueError("There is no temperature below -459.67")
+
+x = FahrenheitToCelsius(-50)
+print(x.get_temperature())
+```
+
+这一次使用set_temperature()方法设置字段temperature的值。虽好一些，但还是有问题：
+
+- 程序员必须小心谨慎，每当要更改字段temperature的值时都要记得使用set_temperature()方法
+- 问题在于字段temperature的值仍然可通过其名称直接更改
+
+```python
+class FahrenheitToCelsius:
+	def __init__(self, value):
+		self.set_temperature(value)
+
+	def get_temperature(self):
+		return 5.0 / 9.0 * (self.temperature - 32.0)
+
+	def set_temperature(self, value):
+		if value >= -459.67:
+			self.temperature = value
+		else:
+			raise ValueError("There is no temperature below -459.67")
+
+x = FahrenheitToCelsius(-50)
+print(x.get_temperature())
+
+# x.set_temperature(-50)
+# print(x.get_temperature())
+
+x.temperature = -500 # 这里直接更改
+print(x.get_temperature())
+```
+
+这个时候就应该使用属性！
+
+- 属性是一个类成员，它为读取、写入或计算我们要保持私有的字段的值提供了一种灵活的机制
+- 属性提供了对字段的公开访问，同时隐藏其内部实现
+
+```python
+class FahrenheitToCelsius:
+	def __init__(self, value):
+		self.set_temperature(value)
+
+	def get_temperature(self):
+		return 5.0 / 9 * (self._temperature - 32)
+
+	def set_temperature(self, value):
+		if value >= -459.67:
+			self._temperature = value
+		else:
+			raise ValueError("There is no temperature below -459.67")
+
+# define a property
+temperature = property(get_temperature, set_temperature)
+# NameError: name 'get_temperature' is not defined
+# 一直弄不懂这里，为什么一直显示上面这句错误
+
+# main code starts here
+x = FahrenheitToCelsius(-50)
+
+print(x.temperature)
+x.temperature = -500
+print(x.temperature)
+```
+
+语句temperature = property(get_temperature, set_temperature)的作用：
+
+- 当一条语句尝试访问属性temperature的值时，将自动调用get_temperature()方法
+- 当语句尝试将值赋给属性temperature时，将自动调用set_temperature()方法
+
+所以，现在一切都Ok了？不，还有更好的！！！
+
+```python 
+class FahrenheitToCelsius:
+	def __init__(self, value):
+		self.temperature = value # 第三：=value no (value)
+
+	@property
+	def temperature(self):
+		return 5.0 / 9 * (self._temperature - 32)
+		# 第一：9 no 9.0 第二：_tem no tem　第五：32 no 32.0
+
+	@temperature.setter
+	def temperature(self, value):
+		if value >= -459.67:
+			self._temperature = value
+		else:
+			raise ValueError("There is no temperature below -459.67")
+
+# main code starts here
+x = FahrenheitToCelsius(-50)
+
+# print(x.temperature)
+
+# x.temperature = -60
+# print(x.temperature)
+
+x.temperature = -500
+print(x.temperature)
+```
+
