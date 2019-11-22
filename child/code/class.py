@@ -253,50 +253,226 @@
 # 		else:
 # 			raise ValueError("There is no temperature below -459.67")
 
+# 	temperature = property(get_temperature, set_temperature)
 # define a property
+# 我就知道，我一贯就这样，底下这句是要一个缩进的，也就是在类里面的，我...
 # temperature = property(get_temperature, set_temperature)
 # NameError: name 'get_temperature' is not defined
 
 # main code starts here
 # x = FahrenheitToCelsius(-50)
 
-# print(x.temperature)
+# # print(x.temperature)
 # x.temperature = -500
 # print(x.temperature)
 
 # x = FahrenheitToCelsius(0)
 # x.set_temperature(-100)
 # x.temperature = -100
+# print(x.temperature)
 
 
-class FahrenheitToCelsius:
-	def __init__(self, value):
-		self.temperature = value # 第三：=value no (value)
+# class FahrenheitToCelsius:
+# 	def __init__(self, value):
+# 		self.temperature = value # 第三：=value no (value)
+
+# 	@property
+# 	def temperature(self):
+# 		return 5.0 / 9 * (self._temperature - 32)
+# 		# 第一：9 no 9.0 第二：_tem no tem　第五：32 no 32.0
+
+# 	@temperature.setter
+# 	def temperature(self, value):
+# 		if value >= -459.67:
+# 			self._temperature = value
+# 		else:
+# 			raise ValueError("There is no temperature below -459.67")
+
+# # main code starts here
+# x = FahrenheitToCelsius(-50)
+
+# # print(x.temperature)
+
+# # x.temperature = -60
+# # print(x.temperature)
+
+# x.temperature = -500
+# print(x.temperature)
+
+######### EXERCISE ###########
+# 1.Roman number-------------
+# class Romans:
+# 	def __init__(self):
+# 		# Private field. It does not call the setter!
+# 		self._number = None
+
+# 	@property
+# 	def number(self):
+# 		return self._number
+
+# 	@number.setter
+# 	def number(self, value):
+# 		if value >= 1 and value <= 5:
+# 			self._number = value
+# 		else:
+# 			raise ValueError("Number not recognized")
+
+# 	@property
+# 	def roman(self):
+# 		number2roman = {1: "I", 2: "II", 3: "III", 4: "IV", 5: "V"}
+# 		return number2roman[self._number]
+
+# 	@roman.setter
+# 	def roman(self, value):
+# 		roman2number = {"I": 1, "II": 2, "III": 3, "IV": 4, "V": 5}
+# 		if value in roman2number:
+# 			self._number = roman2number[value]
+# 		else:
+# 			raise ValueError("Roman numeral not recognized")
+
+# # Main code starts here
+# x = Romans()
+
+# x.number = 3
+# print(x.number)
+# print(x.roman)
+
+# x.roman = "V"
+# print(x.number)
+# print(x.roman)
+
+# class A:
+# 	def foo1(self):
+# 		print("foo1 was called")
+# 		self.foo2()
+
+# 	def foo2(self):
+# 		print("foo2 was called")
+
+# a = A()
+# a.foo1()
+
+# import math
+# class DoingMath:
+# 	def square(self, x):
+# 		print("The square of", x, "is", x * x)
+
+# 	def square_root(self, x):
+# 		if x < 0:
+# 			print("Cannot calculate square root")
+# 		else:
+# 			print("Square root of", x, "is", math.sqrt(x))
+
+# 	def display_results(self, x):
+# 		self.square(x)
+# 		self.square_root(x)
+
+# dm = DoingMath()
+# b = float(input("Enter a number: "))
+# dm.display_results(b)
+
+# class SchoolMember:
+# 	def __init__(self, name, age):
+# 		self.name = name
+# 		self.age = age
+# 		print("A school member was initialized")
+# class Teacher(SchoolMember):
+# 	def __init__(self, name, age, salary):
+# 		SchoolMember.__init__(self, name, age)
+
+# 		self.salary = salary
+# 		print("A teacher was initialized")
+
+# class Student(SchoolMember):
+# 	def __init__(self, name, age, grades):
+# 		SchoolMember.__init__(self, name, age)
+
+# 		self.grades = grades
+		# print("A student was initialized")
+	
+class SchoolMember:
+	def __init__(self, name, age):
+		self.name = name
+		self.age = age
+		print("A school member was initialized")
 
 	@property
-	def temperature(self):
-		return 5.0 / 9 * (self._temperature - 32)
-		# 第一：9 no 9.0 第二：_tem no tem　第五：32 no 32.0
-
-	@temperature.setter
-	def temperature(self, value):
-		if value >= -459.67:
-			self._temperature = value
+	def name(self):
+		return self._name
+	
+	@name.setter
+	def name(self, value):
+		if value != "":
+			self._name = value
 		else:
-			raise ValueError("There is no temperature below -459.67")
+			raise ValueError("Name cannot be empty")
 
-# main code starts here
-x = FahrenheitToCelsius(-50)
+	@property
+	def age(self):
+		return self._age
 
-# print(x.temperature)
+	@age.setter
+	def age(self, value):
+		if value > 0:
+			self._age = value
+		else:
+			raise ValueError("Age cannot be negative or zero")
+	
+class Teacher(SchoolMember):
+	def __init__(self, name, age, salary):
+		SchoolMember.__init__(self, name, age)
 
-# x.temperature = -60
-# print(x.temperature)
+		self.salary = salary
+		print("A teacher was initialized")
 
-x.temperature = -500
-print(x.temperature)
+	@property
+	def salary(self):
+		return self._salary
+	
+	@salary.setter
+	def salary(self, value):
+		if value > 0:
+			self._salary = value
+		else:
+			raise ValueError("Salary cannot be negative")
 
+class Student(SchoolMember):
+	def __init__(self, name, age, grades):
+		SchoolMember.__init__(self, name, age)
 
+		self.grades = grades
+		print("A student was initialized")
+
+	@property
+	def grades(self):
+		return self._grades
+	
+	@grades.setter
+	def grades(self, values):
+		negative_found = False
+		for value in values:
+			if value < 0:
+				negative_found = True
+
+		if negative_found == False:
+			self._grades = values
+		else:
+			raise ValueError("Grades cannot be negative")
+
+teacher1 = Teacher("Mr. Zhang", 39, 5000)
+teacher2 = Teacher("Mr. Li", 37, 4000)
+
+student1 = Student("Mary", 12, [90, 89, 95])
+student2 = Student("John", 13, [91, 87, 85])
+
+print(teacher2.name)
+print(teacher2.age)
+print(teacher2.salary)
+
+print(student2.name)
+print(student2.age)
+print(student2.grades)
+	
 
 
 

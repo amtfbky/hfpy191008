@@ -3548,10 +3548,10 @@ class FahrenheitToCelsius:
 		else:
 			raise ValueError("There is no temperature below -459.67")
 
-# define a property
-temperature = property(get_temperature, set_temperature)
-# NameError: name 'get_temperature' is not defined
-# 一直弄不懂这里，为什么一直显示上面这句错误
+  # define a property
+  temperature = property(get_temperature, set_temperature)
+  # 这里别忘了缩进，否则报错如下
+  # NameError: name 'get_temperature' is not defined
 
 # main code starts here
 x = FahrenheitToCelsius(-50)
@@ -3561,23 +3561,40 @@ x.temperature = -500
 print(x.temperature)
 ```
 
+>### 提示
+>
+>_temperature：下划线表示该变量是“私有变量”。
+
 语句temperature = property(get_temperature, set_temperature)的作用：
 
 - 当一条语句尝试访问属性temperature的值时，将自动调用get_temperature()方法
 - 当语句尝试将值赋给属性temperature时，将自动调用set_temperature()方法
 
-所以，现在一切都Ok了？不，还有更好的！！！
+所以，现在一切都Ok了？不，还有更好的！可以彻底消除对上述两个方法的调用。为什么？
+
+答案很简单，同时存在两种访问temperature的值的方式，
+
+```
+x = FahrenheitToCelsius(0)
+
+＃There are still two ways to access the value of field temperature
+x.set_temperature(-100)
+x.temperature = -100
+```
+
+为了完全摆脱这两个方法，可以使用一些Python支持的装饰器。
 
 ```python 
 class FahrenheitToCelsius:
 	def __init__(self, value):
-		self.temperature = value # 第三：=value no (value)
+		self.temperature = value # This calls the setter
 
+  # Use a decorator to define the getter
 	@property
 	def temperature(self):
 		return 5.0 / 9 * (self._temperature - 32)
-		# 第一：9 no 9.0 第二：_tem no tem　第五：32 no 32.0
 
+  # Use a decorator to define the setter
 	@temperature.setter
 	def temperature(self, value):
 		if value >= -459.67:
@@ -3586,14 +3603,370 @@ class FahrenheitToCelsius:
 			raise ValueError("There is no temperature below -459.67")
 
 # main code starts here
+# This calls the constructor which, in turn, calls the setter
+# 它调用构造函数，而构造函数又调用setter
 x = FahrenheitToCelsius(-50)
 
-# print(x.temperature)
+# print(x.temperature) # This calls the getter
 
-# x.temperature = -60
-# print(x.temperature)
+# x.temperature = -60 # This calls the setter
+# print(x.temperature) # This calls the getter
 
-x.temperature = -500
+x.temperature = -500 # This calls the setter and throws an error
+# This is never executed. The flow of execution is stopped due to the previous statement.
+# 这永远不会执行。执行流由于前一条语句而停止。
 print(x.temperature)
 ```
+
+>### 提示
+>
+>装饰器是一个函数，它接受另一个函数作为参数，并返回该函数。它在不更改函数的主体的前提下更改函数的行为或扩展函数的功能。
+
+#### exercise
+
+1.罗马数字：1-I 2-II 3-III 4-IV 5-V
+
+- Romans的类：
+  - 一个构造方法和一个叫number的私有字段
+  - 一个名为number的属性，用于获取和设置整数格式的私有字段number值。当无法识别该数字，setter必须抛出异常
+  - 一个名为roman的属性，用于获取和设置罗马数字格式的私有字段number值。当无法识别该数字，setter必须抛出异常
+
+```python
+class Romans:
+	def __init__(self):
+		# Private field. It does not call the setter!
+    # 它不调用setter???
+		self._number = None
+
+	@property
+	def number(self):
+		return self._number
+
+	@number.setter
+	def number(self, value):
+		if value >= 1 and value <= 5:
+			self._number = value
+		else:
+			raise ValueError("Number not recognized")
+
+	@property
+	def roman(self):
+		number2roman = {1: "I", 2: "II", 3: "III", 4: "IV", 5: "V"}
+		return number2roman[self._number]
+
+	@roman.setter
+	def roman(self, value):
+		roman2number = {"I": 1, "II": 2, "III": 3, "IV": 4, "V": 5}
+		if value in roman2number:
+			self._number = roman2number[value]
+		else:
+			raise ValueError("Roman numeral not recognized")
+
+# Main code starts here
+x = Romans()
+
+x.number = 3
+print(x.number)
+print(x.roman)
+
+x.roman = "V"
+print(x.number)
+print(x.roman)
+```
+
+### 11.7 同一个类里方法互调
+
+```python
+class A:
+	def foo1(self):
+		print("foo1 was called")
+		self.foo2()
+
+	def foo2(self):
+		print("foo2 was called")
+
+a = A()
+a.foo1()
+```
+
+#### exercise
+
+1.运算：显示用户给的数字的平方和平方根
+
+- DoingMath的类：
+
+  - square方法：计算接收到的数字的平方，并显示结果
+  - square_root方法：计算接收到的数字的平方根并显示结果；如果数字<0，报错
+  - display_results方法：接收到用户输入的数字，调用上面两个方法（显示结果）
+
+  ```python
+  import math
+  class DoingMath:
+  	def square(self, x):
+  		print("The square of", x, "is", x * x)
+  
+  	def square_root(self, x):
+  		if x < 0:
+  			print("Cannot calculate square root")
+  		else:
+  			print("Square root of", x, "is", math.sqrt(x))
+  
+  	def display_results(self, x):
+  		self.square(x)
+  		self.square_root(x)
+  
+  dm = DoingMath()
+  b = float(input("Enter a number: "))
+  dm.display_results(b)
+  ```
+
+### 11.8　类继承：OOP的主要概念之一
+
+父类：也叫基类或超类，被继承的类；其实就是抽取几个不完全相同但具有许多共同特征的类的一个类
+
+子类：也叫派生类，继承的类；自动继承父类的所有方法和字段，可以在子类添加其它方法和字段
+
+如：一个管理学校老师和学生的程序
+
+- 共同的特征：姓名和年龄，父类SchoolMember
+- 独有的特征：老师的薪水和学生的成绩，子类Teacher和Student
+
+```python
+class SchoolMember:
+	def __init__(self, name, age):
+		self.name = name
+		self.age = age
+		print("A school member was initialized")
+class Teacher(SchoolMember):
+	def __init__(self, name, age, salary):
+    # It calls the constructor of the class SchoolMember
+		SchoolMember.__init__(self, name, age)
+
+    # This is a specific field for class Teacher
+		self.salary = salary
+		print("A teacher was initialized")
+
+class Student(SchoolMember):
+	def __init__(self, name, age, grades):
+		SchoolMember.__init__(self, name, age)
+
+		self.grades = grades
+		print("A student was initialized")
+```
+
+>### 提示
+>
+>SchoolMember.\_\_init\_\_(self, name, age)调用SchoolMember类的构造方法对子类继承得到的字段name和age进行初始化。
+
+```python
+class SchoolMember:
+	def __init__(self, name, age):
+		self.name = name
+		self.age = age
+		print("A school member was initialized")
+
+	@property
+	def name(self):
+		return self._name
+	
+	@name.setter
+	def name(self, value):
+		if value != "":
+			self._name = value
+		else:
+			raise ValueError("Name cannot be empty")
+
+	@property
+	def age(self):
+		return self._age
+
+	@age.setter
+	def age(self, value):
+		if value > 0:
+			self._age = value
+		else:
+			raise ValueError("Age cannot be negative or zero")
+	
+class Teacher(SchoolMember):
+	def __init__(self, name, age, salary):
+		SchoolMember.__init__(self, name, age)
+
+		self.salary = salary
+		print("A teacher was initialized")
+
+	@property
+	def salary(self):
+		return self._salary
+	
+	@salary.setter
+	def salary(self, value):
+		if value > 0:
+			self._salary = value
+		else:
+			raise ValueError("Salary cannot be negative")
+
+class Student(SchoolMember):
+	def __init__(self, name, age, grades):
+		SchoolMember.__init__(self, name, age)
+
+		self.grades = grades
+		print("A student was initialized")
+
+	@property
+	def grades(self):
+		return self._grades
+	
+	@grades.setter
+	def grades(self, values):
+		negative_found = False
+		for value in values:
+			if value < 0:
+				negative_found = True
+
+		if negative_found == False:
+			self._grades = values
+		else:
+			raise ValueError("Grades cannot be negative")
+
+teacher1 = Teacher("Mr. Zhang", 39, 5000)
+teacher2 = Teacher("Mr. Li", 37, 4000)
+
+student1 = Student("Mary", 12, [90, 89, 95])
+student2 = Student("John", 13, [91, 87, 85])
+
+print(teacher2.name)
+print(teacher2.age)
+print(teacher2.salary)
+
+print(student2.name)
+print(student2.age)
+print(student2.grades)
+```
+
+## 附：算法
+
+### 1.基础算法概念
+
+#### 1.1　什么是算法
+
+从技术上讲，算法是一个有着良好定义的语句（指令或命令）的有限序列。
+
+- 该序列有着严格的定义——为特定问题提供了解决方案
+- 算法是一步步解决一个给定的问题的过程
+- “有限”意味着算法一定会执行到终点，不会永远执行
+
+如：制作一杯奶茶的算法
+
+1.把茶放在杯子里
+
+2.把烧水壶灌满水
+
+3.用烧水壶把水烧开
+
+4.往杯子里倒入适量开水
+
+5.往杯子里加牛奶
+
+6.往杯子里加糖
+
+7.搅拌
+
+8.开喝
+
+记住：有些步骤的顺序可能改变，但不能将它们移动到离它们本来位置太远的地方。如，不能将步骤3（烧开水）移到算法的末尾，那就会喝到一杯凉茶。
+
+#### 1.2　什么是计算机程序
+
+用计算机可以理解的语言编写的算法。
+
+- 
+
+#### 1.3　保留字
+
+在计算机语言中，保留字（关键字）是有着严格预定义含义的单词——它被保留用于特殊用途，不能用于任何其它用途。如：Python中if、while、elif、for等等
+
+#### 1.4　语法错误、逻辑错误和运行错误有什么区别
+
+- 语法错误：拼写错误的关键字、缺少标点符号匮缺少左（右）括号等
+
+- 逻辑错误：一种会阻止程序执行你期望的操作的错误
+  - 这种错误你得不到任何警告
+  - 代码可以编译执行，但结果并不是预期的那样
+  - 必须彻查程序才能找出错误
+
+  如：一个程序让计算用户输入的3个数值的平均值，程序员在代码里把3个数值总和除以3手误写成5，程序正常执行，不报错，但结果是错误的！
+
+- 运行错误：程序执行期间发生的错误。
+
+  - 这种错误会导致程序突然终止，甚至导致系统关闭
+  - 最难以检测；也很难预估
+  - 不过，我们可以推测它可能发生，如：内存不足或除零导致
+
+  逻辑错误可能导致运行错误！
+
+>### 提示
+>
+>逻辑错误和运行错误通常叫bugs，在软件发布之前，它们常常在高度过程中被发现。如果在软件公开发布后发现运行时错误，程序员通常会发布补丁或小更新修复错误。
+
+#### 1.5　调试
+
+发现和减少计算机程序中缺陷（bug）数量使其按预期执行的过程。
+
+#### 1.6　为代码添加注释
+
+包含在程序中使程序更容易阅读和理解的信息。
+
+- 程序作者
+- 程序被创建或最近被修改的时间
+- 程序的作用
+- 程序是如何工作的
+
+只在难以理解的特定部分添加即可。
+
+#### 1.7　简单了解计算机如何工作
+
+首先计算机是一个载体，它能完成不同的任务是因为它具有编程能力——执行程序让它执行的任务。程序是计算机执行特定任务所遵循的一组语句（指令或命令）。
+
+那这个载体是个什么物件呢？俗称**硬件**。主要是：
+
+- 中央处理器（CPU）：负责实际执行程序中定义的所有任务
+- 内存（RAM，随机存取存储器）：保存程序（正被执行或运行）和程序正在处理的数据的区域。一断电则无。
+- ROM，只读存储器：环保特殊类型的赝品，只能由计算机读取（但不能更改）。通常包含制造商的指令以及开机引导的程序。断电后不会丢失数据。
+- 辅助存储设备：通常指硬盘，有时（很少）是指CD/DVD驱动器。长时间保存数据。但存储在这里的程序不能直接执行，必须转到内存中才可以。
+- 输入设备：从计算机外部收集数据并将其输入计算机进行处理的所有设备。如：键盘、鼠标和麦克风
+- 输出设备：将数据输出到计算机外部的所有设备。如：显示器和打印机
+
+**软件**分系统软件和应用软件。
+
+- 系统软件：控制和管理计算机基本操作的程序。它管理所连接的所有设备，并保存数据，加载数据，允许执行其它程序。
+  - 操作系统。如：Windows、Linux、Mac OS X、Android和iOS等
+  - 实用软件。一般和操作系统捆绑安装，用于让计算机尽可能高效地运行，如：杀毒和备份工具等
+  - 设备驱动软件。控制连接到计算机的设备，如鼠标或显卡
+- 应用软件：用于处理日常任务的所有其它程序，如：浏览器、Offices、游戏等
+
+再来了解计算机如何执行（运行）程序：
+
+打开计算机时，将操作系统从硬盘加载到内存，等于我们运行的是在内存里的操作系统“副本”；再要运行应用软件，就是继续把该软件从硬盘加载到内存，是应用软件的“副本”。
+
+要稍微深入了解程序的运作，就得再知道编译器和解释器（这里针对Python）：
+
+- 计算机只可以理解特殊的低级语言（机器语言），就是0和1
+- 编译器将高级语言编写的语句翻译成单独的机器语言程序
+- 解释器同时翻译和执行用高级语言编写的语句
+  - 当解释器读取程序中每条单独的语句时，将其翻译成机器语言代码，然后直接执行它
+  - 对程序中的每条语句都要重复这个过程
+
+最后什么是源代码呢？
+
+程序员用高级语言编写的语句（指令或命令）叫源代码或简称代码。
+
+- 程序员首先将源代码输入到一个代码编辑器的程序中，叫编程
+- 然后使用编译器将其翻译成机器语言程序
+- 或者使用解释器同时翻译和执行它
+
+Python是一种计算机高级编程语言：
+
+- 教授算法思维和编程的完美语言
+- 广泛用于科学和数值计算
+- 灵活、强大，容易理解
 
