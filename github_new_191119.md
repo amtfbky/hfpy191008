@@ -474,3 +474,16 @@ Have feedback on the new dashboard? [Let us know](https://www.research.net/r/3C2
 作为该版本的一部分，“发现存储库”页面在Explore下找到了一个新主页。存储库建议出现在Explore和新的仪表板侧栏中。
 
 对新的仪表盘有反馈吗?让我们知道。
+
+
+
+```css
+sudo vi /private/etc/hosts
+151.101.76.249 github.global.ssl.fastly.net 
+192.30.253.112 github.com
+```
+
+```css
+sudo dscacheutil -flushcache
+```
+

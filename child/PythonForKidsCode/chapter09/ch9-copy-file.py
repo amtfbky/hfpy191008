@@ -1,0 +1,6 @@
+f = open('myfile.txt')
+s = f.read()
+f.close()
+f = open('copy_myfile.txt', 'w')
+f.write(s)
+f.close()
