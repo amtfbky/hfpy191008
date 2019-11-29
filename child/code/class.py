@@ -389,7 +389,7 @@
 
 # 		self.grades = grades
 		# print("A student was initialized")
-	
+
 class SchoolMember:
 	def __init__(self, name, age):
 		self.name = name
@@ -399,7 +399,7 @@ class SchoolMember:
 	@property
 	def name(self):
 		return self._name
-	
+
 	@name.setter
 	def name(self, value):
 		if value != "":
@@ -417,7 +417,8 @@ class SchoolMember:
 			self._age = value
 		else:
 			raise ValueError("Age cannot be negative or zero")
-	
+
+
 class Teacher(SchoolMember):
 	def __init__(self, name, age, salary):
 		SchoolMember.__init__(self, name, age)
@@ -428,7 +429,7 @@ class Teacher(SchoolMember):
 	@property
 	def salary(self):
 		return self._salary
-	
+
 	@salary.setter
 	def salary(self, value):
 		if value > 0:
@@ -446,7 +447,7 @@ class Student(SchoolMember):
 	@property
 	def grades(self):
 		return self._grades
-	
+
 	@grades.setter
 	def grades(self, values):
 		negative_found = False

@@ -24,6 +24,7 @@ ball = Ball(canvas, 'red')
 while 1:
     ball.draw()
     tk.update_idletasks()
-    tk.update()
+    # tk.update()
+
     time.sleep(0.01)
 

@@ -30,6 +30,7 @@ class Ball:
             self.y = 3
         if pos[3] >= self.canvas_height:
             self.y = -3
+        #当球碰到球拍时反弹
         if self.hit_paddle(pos) == True:
             self.y = -3
         if pos[0] <= 0:
@@ -39,7 +40,15 @@ class Ball:
             
     def hit_paddle(self, pos):
         paddle_pos = self.canvas.coords(self.paddle.id)
+        #当小球右侧>=球拍左侧，且球的左侧<=拍的右侧
         if pos[2] >= paddle_pos[0] and pos[0] <= paddle_pos[2]:
+            #球顶部是否在球拍的顶部和底部之间
+            '''
+            这里有个疑问：为什么要判断球在球拍的顶部和底部之间呢？
+            判断球是否触到球拍顶部不就行了吗？因为球移动3个像素，如果只检查
+            触顶，有可能球已经跨过了顶部，那球仍会继续向前移动，穿过球拍，
+            不会停止
+            '''
             if pos[3] >= paddle_pos[1] and pos[3] <= paddle_pos[3]:
                 return True
         return False
@@ -55,10 +64,10 @@ class Paddle:
         self.canvas.bind_all('<KeyPress-Right>', self.turn_right)
         
     def turn_left(self, evt):
-        self.x = -2
+        self.x = -4
         
     def turn_right(self, evt):
-        self.x = 2
+        self.x = 4
         
     def draw(self):
         self.canvas.move(self.id, self.x, 0)

@@ -1,3 +1,7 @@
+'''
+画星星，两个参数size和尖角points
+
+'''
 import turtle
 t = turtle.Pen()
 def draw_star(size, points):
@@ -8,4 +12,4 @@ def draw_star(size, points):
         t.forward(size)
         t.right(180-(angle * 2))
 
-draw_star(80, 70)
+draw_star(80, 6)

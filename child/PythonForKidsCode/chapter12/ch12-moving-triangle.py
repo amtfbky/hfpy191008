@@ -24,3 +24,4 @@ for x in range(0, 34):
     canvas.move(1, 0, -10)
     tk.update()
     time.sleep(0.05)
+tk.mainloop()

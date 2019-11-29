@@ -20,6 +20,8 @@ class Ball:
         paddle_pos = self.canvas.coords(self.paddle.id)
         if pos[2] >= paddle_pos[0] and pos[0] <= paddle_pos[2]:
             if pos[3] >= paddle_pos[1] and pos[3] <= paddle_pos[3]:
+                #球的横飞速度加快
+                self.x += self.paddle.x
                 return True
         return False
         
@@ -79,6 +81,7 @@ tk.update()
 
 paddle = Paddle(canvas, 'blue')
 ball = Ball(canvas, paddle, 'red')
+
 game_over_text = canvas.create_text(250, 200, text='GAME OVER', state='hidden')
 
 while 1:

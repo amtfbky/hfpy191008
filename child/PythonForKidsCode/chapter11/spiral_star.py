@@ -1,3 +1,6 @@
+'''
+螺旋星
+'''
 import turtle
 t = turtle.Pen()
 

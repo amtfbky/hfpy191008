@@ -22,6 +22,7 @@ class Ball:
         self.y = -3
         self.canvas_height = self.canvas.winfo_height()
         self.canvas_width = self.canvas.winfo_width()
+        #球触底，游戏结束
         self.hit_bottom = False
         
     def draw(self):
@@ -31,6 +32,7 @@ class Ball:
             self.y = 3
         if self.hit_paddle(pos) == True:
             self.y = -3
+        #当球触底就不再反弹
         if pos[3] >= self.canvas_height:
             self.hit_bottom = True
         if pos[0] <= 0:
@@ -56,10 +58,10 @@ class Paddle:
         self.canvas.bind_all('<KeyPress-Right>', self.turn_right)
         
     def turn_left(self, evt):
-        self.x = -2
+        self.x = -4
         
     def turn_right(self, evt):
-        self.x = 2
+        self.x = 4
         
     def draw(self):
         self.canvas.move(self.id, self.x, 0)

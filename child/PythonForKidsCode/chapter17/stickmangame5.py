@@ -99,6 +99,11 @@ class PlatformSprite(Sprite):
         self.coordinates = Coords(x, y, x + width, y + height)
 
 class StickFigureSprite(Sprite):
+    '''
+    火柴人精灵：
+        向左跑和向右跑的三个图形分别装入
+        不要每次在屏幕上显示火柴人时重新装入，这太浪费时间
+    '''
     def __init__(self, game):
         Sprite.__init__(self, game)
         self.images_left = [

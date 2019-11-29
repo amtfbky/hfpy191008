@@ -47,6 +47,7 @@ class Paddle:
         self.started = False
         self.canvas.bind_all('<KeyPress-Left>', self.turn_left)
         self.canvas.bind_all('<KeyPress-Right>', self.turn_right)
+        #绑定鼠标左键点击事件
         self.canvas.bind_all('<Button-1>', self.start_game)
 
     def draw(self):
@@ -63,6 +64,7 @@ class Paddle:
     def turn_right(self, evt):
         self.x = 2
         
+    #鼠标左键点击游戏才开始
     def start_game(self, evt):
         self.started = True
 
@@ -86,4 +88,5 @@ while 1:
         paddle.draw()
     tk.update_idletasks()
     tk.update()
+    #球延时开始起跳
     time.sleep(0.01)

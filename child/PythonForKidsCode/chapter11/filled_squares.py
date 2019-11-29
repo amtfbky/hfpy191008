@@ -1,3 +1,9 @@
+'''
+把四边形边长和filled值设成参数
+1.用if检查filled值，真则填色
+2.用循环画四边形
+3.再用if检查filled值，真则关闭填色
+'''
 import turtle
 t = turtle.Pen()
 
