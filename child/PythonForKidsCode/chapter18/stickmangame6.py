@@ -26,7 +26,7 @@ class Game:
         while 1:
             if self.running == True:
                 for sprite in self.sprites:
-                    sprite.move()
+                    snprite.move()
             self.tk.update_idletasks()
             self.tk.update()
             time.sleep(0.01)
