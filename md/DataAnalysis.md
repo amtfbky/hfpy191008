@@ -1,30 +1,22 @@
-# Python for Data Analysis
+### jupyter-notebook
 
-## base1
+tab补全：函数关键词参数（包括等于号=）
 
-### 1.Tab
+问号？
 
-- 补全
-- 内省
-  - 对象的概要信息
-  - 单：函数文档；双：源代码
-  - np.\*load\*?：通配符
+- 显示对象的信息
+- 搜索IPython的命名空间
+- 字符与通配符结合np.\*load\*?
 
-### 2.%run
+??：显示函数的源
 
-- %run ipython_script_test.py # =python xxx.py
+%run xxx.py + argv
 
-- %load ipython_script_test.py # %load魔术函数：导入一个代码单元
+%run -i：让一个脚本访问IPython已经定义过的变量
 
-### 3.中断运行中的代码
+%load xxx.py：将脚本导入到一个代码格中
 
-- Ctrl-C：keyboardInterrupt
-- 当一段Python代码被其他已经编译的扩展模块调用时，则不会
+中断：Ctrl-C
 
-### 4.执行剪贴板中的程序
-
-- %paste：UsageError: Line magic function `%paste` not found.
-- %cpaste：可连续粘贴代码，Ctrl-C中断%cpaste提示符
-
-
+从剪贴板执行程序：%paste %cpaste(粘贴任意多的代码再运行)
 
