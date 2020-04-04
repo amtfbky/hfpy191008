@@ -1,3 +1,5 @@
+a991defc0a602d04f064c43290df0131  CentOS-6.3-x86_64-bin-DVD1.iso
+
 ## 1.多用户多任务分时操作系统
 
 Windows、Linux、Mac OS X等
